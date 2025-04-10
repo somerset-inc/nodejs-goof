@@ -46,7 +46,13 @@ exports.loginHandler = function (req, res, next) {
         return res.status(401).send()
       }
     });
-  } else {
+  } 
+  else if (validator.contains(req.body.username, "test")) {
+    User.find({username: req.body.username, password: req.body.password}, function(err, users) {
+      return res.status(401).send()
+    });
+  }
+  else {
     return res.status(401).send()
   }
 };
