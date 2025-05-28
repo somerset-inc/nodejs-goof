@@ -1,0 +1,27 @@
+name: Snyk SBOM Generate
+
+on:
+  workflow_dispatch:
+  workflow_call:
+
+jobs:
+  sbom-generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@master
+
+      - name: Setup Snyk Action
+        uses: snyk/actions/setup@master
+
+      - name: Test SBOM with Snyk
+        run: snyk sbom --format=cyclonedx1.6+json | jq > sbom.json
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+      - name: Upload SBOM
+        uses: actions/upload-artifact@v3
+        with:
+          name: sbom
+          path: sbom.json
+          retention-days: 5
