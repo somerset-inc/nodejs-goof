@@ -1,4 +1,4 @@
-name: Snyk Code Test
+name: Snyk SBOM Test
 
 on:
   workflow_dispatch:
@@ -20,7 +20,7 @@ jobs:
           path: ${{ github.workspace }}/
           artifact-name: sbom.spdx
 
-      - name: Test Code with Snyk
+      - name: Test SBOM with Snyk
         run: snyk sbom test --experimental --file ${{ github.workspace }}/sbom.spdx
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
