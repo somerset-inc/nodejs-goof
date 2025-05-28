@@ -1,0 +1,26 @@
+name: Snyk Code Test
+
+on:
+  workflow_dispatch:
+  workflow_call:
+
+jobs:
+  code-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@master
+
+      - name: Setup Snyk Action
+        uses: snyk/actions/setup@master
+
+      - name: Generate SBOM
+        uses: anchore/sbom-action@v0
+        with:
+          path: ${{ github.workspace }}/
+          artifact-name: sbom.spdx
+
+      - name: Test Code with Snyk
+        run: snyk sbom test --experimental --file ${{ github.workspace }}/sbom.spdx
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
