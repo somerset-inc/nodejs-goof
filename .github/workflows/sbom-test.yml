@@ -18,7 +18,7 @@ jobs:
         uses: anchore/sbom-action@v0
         with:
           path: ${{ github.workspace }}/
-          artifact-name: sbom.spdx
+          output-file: ${{ github.workspace }}/sbom.spdx
 
       - name: Test SBOM with Snyk
         run: snyk sbom test --experimental --file ${{ github.workspace }}/sbom.spdx
